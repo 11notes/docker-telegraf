@@ -1,6 +1,6 @@
 # :: Build
 	FROM golang:alpine as telegraf
-	ENV checkout=v1.24.2
+	ENV checkout=v1.26.1
 
     RUN set -ex; \
         apk add --update --no-cache \
@@ -13,7 +13,7 @@
         mv telegraf /usr/local/bin;
 
 # :: Header
-	FROM alpine:3.16
+	FROM alpine:latest
 	COPY --from=telegraf /usr/local/bin/ /usr/local/bin
 
 # :: Run
