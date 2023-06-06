@@ -1,7 +1,7 @@
 #!/bin/ash
-if [ -z "${1}" ]; then
+  if [ -z "${1}" ]; then
     set -- "telegraf" \
-        --config /telegraf/etc/telegraf.conf
-fi
+      --config /telegraf/etc/telegraf.conf
+  fi
 
-exec "$@"
+  exec "$@"

@@ -1,46 +1,45 @@
 # :: Build
-	FROM golang:alpine as telegraf
-	ENV checkout=v1.26.1
+  FROM golang:alpine as build
+  ENV checkout=v1.26.3
 
-    RUN set -ex; \
-        apk add --update --no-cache \
-            make \
-            git; \
-        git clone https://github.com/influxdata/telegraf.git; \
-        cd /go/telegraf; \
-		git checkout ${checkout}; \
-        make build -j $(nproc); \
-        mv telegraf /usr/local/bin;
+  RUN set -ex; \
+    apk add --update --no-cache \
+      make \
+      git; \
+    git clone https://github.com/influxdata/telegraf.git; \
+    cd /go/telegraf; \
+    git checkout ${checkout}; \
+    make build -j $(nproc); \
+    mv telegraf /usr/local/bin;
 
 # :: Header
-	FROM alpine:latest
-	COPY --from=telegraf /usr/local/bin/ /usr/local/bin
+  FROM 11notes/alpine:stable
+  COPY --from=build /usr/local/bin/ /usr/local/bin
 
-# :: Run
-	USER root
+  # :: Run
+  USER root
 
-	# :: prepare
-        RUN set -ex; \
-            mkdir -p /telegraf; \
-            mkdir -p /telegraf/etc;
+  # :: update image
+    RUN set -ex; \
+      apk update; \
+      apk upgrade;
 
-		RUN set -ex; \
-			apk add --update --no-cache \
-				shadow;
+  # :: prepare image
+    RUN set -ex; \
+      mkdir -p /telegraf; \
+      mkdir -p /telegraf/etc;
 
-		RUN set -ex; \
-			addgroup --gid 1000 -S telegraf; \
-			adduser --uid 1000 -D -S -h /telegraf -s /sbin/nologin -G telegraf telegraf;
+  # :: copy root filesystem changes and add execution rights to init scripts
+    COPY ./rootfs /
+    RUN set -ex; \
+      chmod +x -R /usr/local/bin;
 
-    # :: copy root filesystem changes
-        COPY ./rootfs /
-
-    # :: docker -u 1000:1000 (no root initiative)
-        RUN set -ex; \
-            chown -R telegraf:telegraf \
-				/telegraf
+  # :: change home path for existing user and set correct permission
+    RUN set -ex; \
+      usermod -d /telegraf docker; \
+      chown -R 1000:1000 \
+        /telegraf;
 
 # :: Start
-	RUN set -ex; chmod +x /usr/local/bin/entrypoint.sh
-	USER telegraf
-	ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+  USER docker
+  ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
