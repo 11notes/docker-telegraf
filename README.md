@@ -1,5 +1,5 @@
 # Alpine :: Telegraf
-Run Nodejs based on Alpine Linux. Small, lightweight, secure and fast 🏔️
+Run Telegraf based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Run
 ```shell
