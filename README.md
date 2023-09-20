@@ -1,4 +1,6 @@
 # Alpine :: Telegraf
+![pulls](https://img.shields.io/docker/pulls/11notes/telegraf?color=2b75d6) ![build](https://img.shields.io/docker/automated/11notes/telegraf?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-telegraf?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-telegraf?color=c91cb8)
+
 Run Telegraf based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Run
@@ -14,6 +16,8 @@ docker run --name telegraf \
 | `user` | docker | user docker |
 | `uid` | 1000 | user id 1000 |
 | `gid` | 1000 | group id 1000 |
+| `home` | /telegraf | home directory of user docker |
+| `config` | /telegraf/etc/telegraf.conf | default configuration |
 
 # Examples telegraf.conf
 ```shell
@@ -46,5 +50,5 @@ docker run --name telegraf \
 * [Alpine Linux](https://alpinelinux.org/)
 
 ## Tips
-* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
-* [Permanent Stroage](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS and more
+* Only use rootless container runtime (podman, rootless docker)
+* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy (haproxy, traefik, nginx)

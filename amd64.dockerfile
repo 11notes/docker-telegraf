@@ -1,6 +1,6 @@
 # :: Build
   FROM golang:alpine as build
-  ENV checkout=v1.26.3
+  ENV checkout=v1.28.1
 
   RUN set -ex; \
     apk add --update --no-cache \
@@ -21,8 +21,8 @@
 
   # :: update image
     RUN set -ex; \
-      apk update; \
-      apk upgrade;
+      apk --no-cache upgrade;
+
 
   # :: prepare image
     RUN set -ex; \
