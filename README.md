@@ -1,12 +1,12 @@
 # Alpine :: Telegraf
-![pulls](https://img.shields.io/docker/pulls/11notes/telegraf?color=2b75d6) ![build](https://img.shields.io/docker/automated/11notes/telegraf?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-telegraf?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-telegraf?color=c91cb8)
+![size](https://img.shields.io/docker/image-size/11notes/telegraf/1.28.3?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/telegraf?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/telegraf?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-telegraf?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-telegraf?color=c91cb8)
 
 Run Telegraf based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Run
 ```shell
 docker run --name telegraf \
-  -v /.../telegraf.conf:/telegraf/etc/telegraf.conf:ro \
+  -v ../telegraf.conf:/telegraf/etc/telegraf.conf:ro \
   -d 11notes/telegraf:[tag]
 ```
 
@@ -33,7 +33,7 @@ docker run --name telegraf \
   hostname = "telegraf"
 
 [[outputs.influxdb_v2]]
-  urls = ["http://localhost:8086"]
+  urls = ["https://influxdb"]
   token = "**********************************************"
   organization = "influxdb"
   bucket = "global"
@@ -42,10 +42,10 @@ docker run --name telegraf \
   urls = ["http://localhost:8080/metrics"]
 ```
 
-## Parent
+## Parent image
 * [11notes/alpine:stable](https://github.com/11notes/docker-alpine)
 
-## Built with
+## Built with and thanks to
 * [telegraf](https://github.com/influxdata/telegraf)
 * [Alpine Linux](https://alpinelinux.org/)
 
