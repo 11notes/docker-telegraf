@@ -8,7 +8,17 @@
       git; \
     git clone https://github.com/influxdata/telegraf.git; \
     cd /go/telegraf; \
-    git checkout ${APP_VERSION}; \
+    git checkout ${APP_VERSION};
+
+  # fix security
+  # https://github.com/advisories/GHSA-m425-mq94-257g
+  RUN set -ex; \
+    sed -i 's#\(google.golang.org/grpc\) v1.58.2#\1 v1.58.3#g' /go/telegraf/go.mod; \
+    cd /go/telegraf; \
+    go mod tidy;
+
+  RUN set -ex; \
+    cd /go/telegraf; \
     make build -j $(nproc); \
     mv telegraf /usr/local/bin;
 
